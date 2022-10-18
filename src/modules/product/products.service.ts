@@ -3,15 +3,15 @@ import defaultResponse from "../../utils/defaultResponse";
 import { Product } from "./product.class";
 import ProductModel from "./product.schema";
 
-export async function index(){
+export async function index() {
     try {
         const products = await ProductModel
-        .find()
-        .exec()
-    
-        if(products){
+            .find()
+            .exec()
+
+        if (products) {
             return defaultResponse(false, '', products);
-        }else{
+        } else {
             return defaultResponse(true, 'Nenhum produto encontrado!', []);
         }
     } catch (error) {
@@ -19,90 +19,95 @@ export async function index(){
     }
 }
 
-export async function getByUuid(uuid:string){
-    try{
-        const product = await ProductModel.findOne({uuid})
-        .exec()
+export async function getByUuid(uuid: string) {
+    try {
+        const product = await ProductModel.findOne({ uuid })
+            .exec()
 
-        if(product){
+        if (product) {
             return defaultResponse(false, 'produto encontrado!', product);
-        }else{
+        } else {
             return defaultResponse(true, 'produto nao encontrado!', []);
         }
-    }catch(error){
+    } catch (error) {
         return defaultResponse(true, 'Erro ao procurar produto!', error);
     }
 }
 
-export async function store(product:Product){
-    try{
+export async function store(product: Product) {
+    try {
         const searchProd = await ProductModel.findOne({
-            description:product.getDescription()
+            description: product.getDescription()
         }).exec();
         console.log(searchProd)
-        if(!searchProd){
+        if (!searchProd) {
             const newProd = await ProductModel.create({
                 uuid: randomUUID(),
-                descriptiion: product.getDescription(),
+                description: product.getDescription(),
                 value: product.getValue(),
                 promotionValue: product.getPromotionValue(),
-                imgUrl: product.getImgUrl(),
+                imgUrl: 'files/' + product.getImgUrl(),
             })
-            if(newProd){
-                return defaultResponse(false, 'Produto adicionar com sucesso!',newProd);
-            }else{
+            if (newProd) {
+                return defaultResponse(false, 'Produto adicionar com sucesso!', newProd);
+            } else {
                 return defaultResponse(true, 'Produto ja existe no banco de dados!', []);
             }
-        }else{
+        } else {
             return defaultResponse(true, 'Produto ja existe no banco de dados!', []);
         }
-    }catch(error){
+    } catch (error) {
         return defaultResponse(true, 'Erro ao adicionar produto!', []);
     }
 }
 
-export async function update(data:[], uuid:string){
-    try{
-        const findedProd = await ProductModel.findOne({uuid}).exec();
-        const result = await ProductModel.updateOne({uuid}, data)
-        console.log(result)
-        if(findedProd && result.modifiedCount > 0){
+export async function update(newData: Product, uuid: string) {
+    console.log(uuid)
+    try {
+        const result = await ProductModel.updateOne({ uuid }, newData)
+
+        if (result && result.modifiedCount > 0) {
             return defaultResponse(false, 'Produto alterado com sucesso!', true);
-        }else if(findedProd && result.modifiedCount == 0){
+        } else if (result && result.modifiedCount === 0) {
             return defaultResponse(false, 'Nada a alterar', true);
-        }else{
+        } else {
             return defaultResponse(true, 'Produto nao encontrado!', false);
         }
-    }catch(error){
+    } catch (error) {
         return defaultResponse(true, 'Erro ao alterar produto!', error);
     }
 }
 
-export async function destroy(uuid:string){
-    try{
+export async function destroy(uuid: string) {
+    try {
         const result = await ProductModel.deleteOne({
             uuid
         });
-    
-        if(result.deletedCount > 0){
+
+        if (result.deletedCount > 0) {
             return defaultResponse(false, 'Produto deletado com sucesso!', true);
-        }else{
+        } else {
             return defaultResponse(true, 'Produto nao encontrado!', false);
         }
-    }catch(error){
+    } catch (error) {
         return defaultResponse(true, 'Erro ao deletar produto!', false)
     }
 }
 
-export async function destroyMany(uuids:any){
-    try{
-        for (let index = 0; index < uuids.length; index++) {
-            const uuid = uuids[index];
-            await ProductModel.deleteOne(uuid);
-        }
-    
+export async function destroyMany(uuids: any) {
+    console.log(uuids.length)
+    try {
+        let index = 0
+
+        do {
+            await ProductModel.findOneAndDelete(uuids[index])
+                .then((_) => index++)
+                .catch((_) => index++)
+
+        } while (index < uuids.length)
+
         return defaultResponse(false, 'Produtos deletados com sucesso!', true);
-    }catch(error){
+    } catch (error) {
         return defaultResponse(true, 'Erro ao deletar produtos!', false)
     }
 }

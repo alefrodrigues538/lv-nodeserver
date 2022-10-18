@@ -1,32 +1,37 @@
-export class User{
+export class User {
     private username;
     private email;
     private password;
+    private accessLevel = 0;
 
-    constructor(username:string, email:string, password:string){
+    constructor(username: string, email: string, password: string) {
         this.username = username;
         this.email = email;
         this.password = password
     }
 
-    getUsername(){
+    getUsername() {
         return this.username;
     }
-    setUsername(value:string){
+    setUsername(value: string) {
         this.username = value;
     }
 
-    getEmail(){
+    getEmail() {
         return this.email;
     }
-    setEmail(value:string){
+    setEmail(value: string) {
         this.username = value;
     }
 
-    getPassword(){
+    getPassword() {
         return this.password;
     }
-    setPassword(value:string){
+    setPassword(value: string) {
         this.password = value;
+    }
+
+    getAccessLevel() {
+        return this.accessLevel;
     }
 }
