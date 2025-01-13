@@ -9,7 +9,7 @@
     "build": "tsc",
     "dev": "nodemon ./src/api/index.ts",
     "dev-vercel": "vercel dev",
-    "start": "node ./dist/index.js"
+    "start": "node ./dist/api/index.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
