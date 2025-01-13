@@ -2,14 +2,14 @@
   "name": "nodeserver",
   "version": "1.0.0",
   "description": "servidor projeto carteira",
-  "main": "./src/api/index.ts",
+  "main": "./src/index.ts",
   "author": "Alef F R Santos",
   "license": "MIT",
   "scripts": {
     "build": "tsc",
     "dev": "nodemon ./src/config/server.ts",
     "dev-vercel": "vercel dev",
-    "start": "node ./dist/config/server.js"
+    "start": "node ./dist/index.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
