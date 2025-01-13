@@ -11,5 +11,9 @@
       "src": "/(.*)",
       "dest": "src/api/index.ts"
     }
-  ]
+  ],
+  "env": {
+    "MONGO_URL": "mongodb+srv://fancy:mongo5etaw@cluster0.nkxii.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+    "PORT": "3000"
+  }
 }
