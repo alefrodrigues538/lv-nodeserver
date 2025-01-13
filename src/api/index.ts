@@ -1,4 +1,4 @@
-const app = require('../src/app');
+const app = require('../app');
 const mongoose = require('mongoose');
 // Substitua o módulo `punycode` por uma alternativa de usuário
 

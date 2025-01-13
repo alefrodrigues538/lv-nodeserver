@@ -1,20 +1,21 @@
+import type { VercelRequest, VercelResponse } from '@vercel/node';
+import multer from 'multer';
 const express = require('express')
-import multer from 'multer'
 
 const multerConfig = require('../config/multer.config')
 
-import { NextFunction, Request, Response } from "express";
+import { NextFunction } from "express";
+import { checkAdmin, checkOperator } from '../middleware/access-level-verify';
 import { jwtVerify } from "../middleware/jwt-verify";
 import { authController } from "../modules/auth";
 import { productController } from "../modules/product";
 import { userController } from "../modules/user";
-import { checkAdmin, checkOperator } from '../middleware/access-level-verify';
 
 const router = express.Router();
 
 const upload = multer({ dest: '../../tmp/uploads' })
 
-router.get('/', (req: Request, res: Response, next: NextFunction) => {
+router.get('/', (req: VercelRequest, res: VercelResponse, next: NextFunction) => {
     res.json({
         version: '1.0.0',
     })
