@@ -8,6 +8,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "nodemon ./src/config/server.ts",
+    "dev-vercel": "vercel dev",
     "start": "node ./dist/config/server.js"
   },
   "dependencies": {
