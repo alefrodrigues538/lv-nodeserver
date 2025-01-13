@@ -1,5 +1,6 @@
 const app = require('../app');
 const mongoose = require('mongoose');
+require('dotenv').config();
 // Substitua o módulo `punycode` por uma alternativa de usuário
 
 // Configure a opção `strictQuery` do Mongoose
