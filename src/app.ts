@@ -1,9 +1,9 @@
 import express from 'express';
+import path from 'path';
 import router from './api-routes/routes';
-import path from 'path'
 const morgan = require("morgan")
 
-require('dotenv-safe').config();
+require('dotenv').config();
 
 const app = express();
 
