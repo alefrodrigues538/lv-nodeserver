@@ -6,9 +6,9 @@
   "author": "Alef F R Santos",
   "license": "MIT",
   "scripts": {
-    "build": "node build",
+    "build": "tsc",
     "dev": "nodemon ./src/config/server.ts",
-    "start": "node ./src/config/server.ts"
+    "start": "node ./dist/config/server.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",

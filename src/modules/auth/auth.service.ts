@@ -6,27 +6,31 @@ import bcrypt from 'bcrypt';
 
 import jwt from 'jsonwebtoken';
 
-export async function authenticateUser(user:User){
+export async function authenticateUser(user: User) {
     try {
         const findedUser = await UserModel.findOne({
-            email:user.getEmail()
+            email: user.getEmail()
         });
+
+        if (!findedUser || !findedUser.password) {
+            throw new Error('User not found or password is undefined');
+        }
 
         const checkPassword = await bcrypt.compare(user.getPassword(), findedUser.password)
 
-        if(findedUser && checkPassword){
+        if (findedUser && checkPassword) {
             const secret = String(process.env.SECRET)
-            const token = jwt.sign({ uuid: findedUser.uuid}, secret, {
-                expiresIn:60 * 60 * 12 //expira em 12 horas
+            const token = jwt.sign({ uuid: findedUser.uuid }, secret, {
+                expiresIn: 60 * 60 * 12 //expira em 12 horas
             });
 
-            return defaultResponse(false, 'usuario conectado!', {access_token: token});
-        }else{
+            return defaultResponse(false, 'usuario conectado!', { access_token: token });
+        } else {
             return defaultResponse(true, 'email e/ou senha incorreto!', []);
         }
     } catch (error) {
         return defaultResponse(true, 'erro ao authenticar usuario!', error);
     }
 
-    
+
 }
